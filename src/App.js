@@ -67,6 +67,27 @@ function App() {
     return `${eventType} - ${playerA} vs ${playerB}`;
   }, [])
 
+  const handleDownload = async (video) => {
+    try {
+      const response = await fetch(video.url, {
+        method: 'GET',
+        mode: 'cors',
+      });
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = video.key; // đặt tên file tải về
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Download failed:', error);
+    }
+  };
+
   return (
     <div style={{ padding: 20, fontFamily: 'sans-serif' }}>
       <h1>Danh sách Satminton videos{expiredIn}</h1>
@@ -84,11 +105,9 @@ function App() {
       {selected && (
         <div>
           <h2>Đang phát: {selected.key}</h2>
-          <video controls width="640">
-            <source src={selected.url} type="video/mp4" />
-          </video>
+          <video src={selected.url} controls width="640"/>
           <br />
-          <a href={selected.url} download>
+          <a href={selected.url} target='_blank'>
             <button>Tải video</button>
           </a>
         </div>
