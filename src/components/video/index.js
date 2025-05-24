@@ -10,6 +10,7 @@ import {
   Tag,
   Divider,
   Center,
+  Progress,
 } from "@chakra-ui/react";
 import { EVENT_TYPES } from "../../constants";
 import {
@@ -18,7 +19,7 @@ import {
   ChevronRightIcon,
   ChevronUpIcon,
 } from "@chakra-ui/icons";
-import { formatBytes } from "../../utils";
+import { formatBytes, formatDate } from "../../utils";
 
 const VideoComp = ({ video }) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -37,19 +38,22 @@ const VideoComp = ({ video }) => {
     const videoKey = video.key;
     const videoType = videoKey.split(".")[1];
     const videoSize = formatBytes(video.size);
+    const lastUpdated = formatDate(video.lastModified, "DD-MM-YYYY");
 
     if (!videoKey) return [];
-    return [videoType, videoSize];
+    return [videoSize, videoType, lastUpdated];
   }, []);
 
   return (
     <Box
-      borderWidth="1px"
+      // borderWidth="1px"
       borderRadius="lg"
       bg={isOpen ? "brand.buttonText" : "brand.bg"}
       cursor="pointer"
+      px={4}
+      pb={4}
       _hover={{
-        bg: "brand.buttonText",
+        bg: "brand.bgHover",
         color: "brand.secondary",
         ".video-title, .chakra-icon": {
           color: "brand.secondary",
@@ -60,23 +64,22 @@ const VideoComp = ({ video }) => {
         justifyContent="space-between"
         alignItems={["start", "center"]}
         direction={["column", "row"]}
-      p={4}
+        pt={4}
         gap={4}
         onClick={() => {
           onToggle();
           setIsPlaying(true);
         }}
       >
-        <Flex alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Icon
-            as={isOpen ? ChevronDownIcon : ChevronLeftIcon}
-            w={6}
-            h={6}
+            as={ChevronRightIcon}
+            w={7}
+            h={7}
+            transition="transform 0.3s ease"
+            transform={isOpen ? "rotate(270deg)" : "rotate(90deg)"}
             color={isOpen ? "brand.secondary" : "brand.buttonText"}
           />
-          <Center height="45px" color="brand.secondary" mr="10px">
-            <Divider orientation="vertical" />
-          </Center>
           <Flex direction="column" alignItems="start" justifyContent="start">
             <Text
               className="video-title"
@@ -96,9 +99,22 @@ const VideoComp = ({ video }) => {
           </Flex>
         </Flex>
 
-        <Button as="a" href={video.url} download minWidth={["100%", "200px"]}>
-          {isOpen ? "Tải video" : "Tải nhanh"}
-        </Button>
+        <Flex alignItems="center">
+          {/* <Icon
+            as={ChevronRightIcon}
+            w={6}
+            h={6}
+            transition="transform 0.3s ease"
+            transform={isOpen ? "rotate(270deg)" : "rotate(90deg)"}
+            color={isOpen ? "brand.secondary" : "brand.buttonText"}
+          /> */}
+          {/* <Center height="35px" color="brand.secondary" mr="7px">
+            <Divider orientation="vertical" />
+          </Center> */}
+          <Button as="a" href={video.url} download minWidth={["100%", "200px"]}>
+            {isOpen ? "Tải video" : "Tải nhanh"}
+          </Button>
+        </Flex>
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>

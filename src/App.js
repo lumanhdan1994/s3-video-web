@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Flex, Heading, Skeleton, Spinner, Stack } from "@chakra-ui/react";
 import VideoComp from "./components/video";
 
 function App() {
@@ -65,11 +65,13 @@ function App() {
 
   return (
     <Flex bg="brand.500" p="20px" direction="column" gap={4}>
-      <Heading>
-        Danh sách Satminton videos{expiredIn}
-      </Heading>
+      <Heading>Danh sách Satminton videos{expiredIn}</Heading>
       {loading ? (
-        <Spinner />
+        <Flex direction="column" gap={4}>
+          {Array.from({ length: 6 }, (_, i) => (
+            <Skeleton key={i} height="80px" borderRadius={"lg"} />
+          ))}
+        </Flex>
       ) : (
         <>
           {videos.length ? (
