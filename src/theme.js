@@ -5,14 +5,15 @@ const colors = {
   brand: {
     primary: "#1D1616",
     secondary: "#8E1616",
-    light: "#EEEEEE",
+    light: "#FFFFFF",
 
     bg: "#000",
     bgCard: "#8E1616",
-    textPrimary: "#EEEEEE",
+    textPrimary: "#FFFFFF",
     textSecondary: "#D84040",
     buttonBg: "#CF0F47",
     buttonText: "#FFFFFF",
+    bgHover: "#EEEEEE",
   },
 };
 
@@ -35,13 +36,13 @@ const components = {
         bg: colors.brand.buttonBg,
         color: colors.brand.buttonText,
         _hover: {
-          bg: colors.brand.buttonText,
-            color: colors.brand.secondary,
+          bg: colors.brand.bgCard,
+        //   color: colors.brand.secondary,
         },
       },
     },
   },
-}
+};
 
 const theme = extendTheme({
   config: {
@@ -50,7 +51,7 @@ const theme = extendTheme({
   },
   colors,
   styles,
-  components
+  components,
 });
 
 export default theme;
